@@ -174,8 +174,49 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
+
+  // Rehydrate from localStorage if store is empty
+  if (!userStore.token) {
+    const persistedToken = localStorage.getItem('token')
+    if (persistedToken) userStore.setToken(persistedToken)
+  }
+  if (!userStore.user) {
+    const persistedUser = localStorage.getItem('user')
+    if (persistedUser) {
+      try {
+        userStore.setUser(JSON.parse(persistedUser))
+      } catch (_) {
+        // corrupted user payload → clear
+        userStore.clearUser()
+      }
+    }
+  }
+
   const token = userStore.token
-  const userScope = userStore.user?.scope
+  let userScope = userStore.user?.scope
+
+  // Validate JWT expiration and scope from token if available
+  const isJwt = token && token.split('.').length === 3
+  if (isJwt) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      const nowInSeconds = Math.floor(Date.now() / 1000)
+      if (payload.exp && payload.exp < nowInSeconds) {
+        // Token expired → force logout
+        userStore.clearUser()
+        if (to.meta.requiresAuth) return next('/login')
+      }
+      // derive scope from token if not already set
+      if (!userScope && payload.scope) {
+        userScope = payload.scope
+        userStore.setUser({ ...(userStore.user || {}), scope: payload.scope })
+      }
+    } catch (_) {
+      // invalid token → clear
+      userStore.clearUser()
+      if (to.meta.requiresAuth) return next('/login')
+    }
+  }
 
   if (to.meta.requiresAuth) {
     if (!token) return next('/login') // chưa login → login

@@ -61,8 +61,13 @@ export function useAuth() {
   }
 
   const logout = async () => {
-    await authService.logout()
+    try {
+      await authService.logout()
+    } catch (_) {
+      // ignore API failure; proceed to clear locally
+    }
     userStore.clearUser()
+    router.replace('/login')
   }
 
   return { login, register, logout, loading, error }
