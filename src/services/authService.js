@@ -6,7 +6,7 @@ export const authService = {
   },
 
   register(data) {
-    return api.post('/auth/register', data)
+    return api.post('/users/', data)
   },
 
   logout() {

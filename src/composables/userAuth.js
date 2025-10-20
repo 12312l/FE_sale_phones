@@ -51,10 +51,14 @@ export function useAuth() {
     error.value = null
     try {
       const res = await authService.register(formData)
-      userStore.setUser(res.data.user)
-      userStore.setToken(res.data.token)
+      console.log('Register response:', res)
+      
+      // API đăng ký thành công, chuyển về trang login
+      router.replace('/login')
+      
     } catch (err) {
-      error.value = err.response?.data?.message || 'Đăng ký thất bại'
+      console.error('Lỗi register:', err)
+      error.value = err.response?.data?.data?.message || 'Đăng ký thất bại'
     } finally {
       loading.value = false
     }

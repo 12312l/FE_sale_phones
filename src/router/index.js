@@ -28,9 +28,9 @@ const router = createRouter({
     },
     
     {
-      path: '/user',
+      path: '/',
       name: 'User',
-      component: () => import('../layouts/UserLayout.vue'),
+      component: () => import('../pages/home/Home.vue'),
       // meta: { title: 'User' },
       meta: { requiresAuth: true, scope: 'USER' },
 
