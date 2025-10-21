@@ -35,6 +35,14 @@ const router = createRouter({
       meta: { requiresAuth: true, scope: 'USER' },
 
     },
+    {
+      path: '/product-detail',
+      name: 'ProductDetail',
+      component: () => import('../pages/ProductDetail.vue'),
+      meta: {
+        title: 'ProductDetail',
+      },
+    },
     // {
     //   path: '/',
     //   redirect: '/login',
