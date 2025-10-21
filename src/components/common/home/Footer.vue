@@ -1,8 +1,8 @@
 <template>
   <footer class="">
      <!-- Top Section - 5T Experience -->
-     <div class="bg-gray-50 py-8">
-       <div class="max-w-7xl mx-auto px-4 py-5 my-5 bg-white rounded-2xl shadow-lg">
+     <div class="bg-gray-50">
+       <div class="w-[70%] mx-auto px-4 py-5 my-5 bg-white rounded-2xl shadow-lg">
         <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">
           Trải nghiệm mua sắm 5T tại Hoàng Hà
         </h2>

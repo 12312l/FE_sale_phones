@@ -5,8 +5,8 @@
     <div class="w-[70%] mx-auto">
         <Banner class="mt-5"/>
         <ProductList class="mt-5"/>
-        <Footer />
     </div>
+    <Footer />
 </template>
 
 <script setup>

@@ -45,11 +45,15 @@
           </button>
 
           <!-- Account -->
-          <button class="flex items-center text-teal-500 hover:text-teal-600 transition-colors gap-1">
+          <button 
+            @click="handleAccountClick"
+            class="flex items-center text-teal-500 hover:text-teal-600 transition-colors gap-1"
+          >
             <CaUserAvatarFilled class="w5 h-5"/>
-            <span class="text-sm font-medium">Tài khoản</span>
+            <span class="text-sm font-medium">
+              {{ userStore.user?.username || 'Tài khoản' }}
+            </span>
           </button>
-
           <!-- Shopping Cart -->
           <button class="relative flex items-center text-gray-700 hover:text-gray-900 transition-colors">
             <CoCart class="w-5 h-5"/>
@@ -93,6 +97,33 @@ const trendingKeywords = ref([
 ])
 
 // Có thể thêm logic xử lý search, cart, account ở đây
+
+// Import router và store
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/store/authStore'
+
+const router = useRouter()
+const userStore = useUserStore()
+
+// Function xử lý click nút tài khoản
+const handleAccountClick = () => {
+  const token = userStore.token
+  const user = userStore.user
+  
+  console.log('Token:', token)
+  console.log('User:', user)
+  
+  if (!token) {
+    // Chưa đăng nhập → chuyển đến trang login
+    console.log('No token, redirecting to login')
+    router.push('/login')
+    return
+  }
+  
+  // Đã đăng nhập → chuyển đến trang InfoUser
+  console.log('Has token, redirecting to info-user')
+  router.push('/info-user')
+}
 </script>
 
 <style scoped>

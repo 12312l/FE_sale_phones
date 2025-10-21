@@ -32,7 +32,7 @@ const router = createRouter({
       name: 'User',
       component: () => import('../pages/home/Home.vue'),
       // meta: { title: 'User' },
-      meta: { requiresAuth: true, scope: 'USER' },
+      // meta: { requiresAuth: true, scope: 'USER' },
 
     },
     {
@@ -41,6 +41,63 @@ const router = createRouter({
       component: () => import('../pages/ProductDetail.vue'),
       meta: {
         title: 'ProductDetail',
+      },
+    },
+
+    {
+      path: '/info-user',
+      name: 'Account',
+      component: () => import('../pages/InfoUser.vue'),
+      meta: {
+        requiresAuth: true,
+        scope: 'USER'
+      },
+      children: [
+        {
+          path: '',
+          name: 'Overview',
+          component: () => import('../components/user/Overview.vue'),
+        },
+        {
+          path: 'profile',
+          name: 'UserProfile',
+          component: () => import('../components/user/MyProfile.vue'),
+        },
+        {
+          path: 'orders',
+          name: 'UserOrders',
+          component: () => import('../components/user/MyOders.vue'),
+        },
+        {
+          path: 'vouchers',
+          name: 'UserVouchers',
+          component: () => import('../components/user/MyVoucher.vue'),
+        },
+        {
+          path: 'purchase-history',
+          name: 'PurchaseHistory',
+          component: () => import('../components/user/PurchaseHistory.vue'),
+        },
+        {
+          path: 'comments',
+          name: 'CommentManagement',
+          component: () => import('../components/user/CommentManagement.vue'),
+        },
+        {
+          path: 'reviews',
+          name: 'ReviewManagement',
+          component: () => import('../components/user/ReviewManagement.vue'),
+        },
+      ]
+    },
+    {
+      path: '/account/info',
+      name: 'InfoUser',
+      component: () => import('../components/user/MyProfile.vue'),
+      meta: {
+        title: 'InfoUser',
+        requiresAuth: true,
+        scope: 'USER'
       },
     },
     // {
@@ -230,7 +287,7 @@ router.beforeEach((to, from, next) => {
     if (!token) return next('/login') // chưa login → login
     if (to.meta.scope && to.meta.scope !== userScope) {
       // đã login nhưng không đúng quyền → redirect về trang mặc định
-      return next(userScope === 'ADMIN' ? '/admin' : '/user')
+      return next(userScope === 'ADMIN' ? '/admin' : '/')
     }
   }
 
